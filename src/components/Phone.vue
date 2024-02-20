@@ -44,19 +44,34 @@ const countries = jsonData as Country[];
 const phoneNumber = ref('');
 const isDropdownVisible = ref(false);
 const selectedCountry = ref<Country | null>(null);
-const apiToken = ref(import.meta.env.VITE_IPINFO_TOKEN);
 const placeholderImage = 'https://upload.wikimedia.org/wikipedia/commons/e/eb/Blank.jpg'
 
 const getGeoLocation = async () => {
   try {
-    const response = await fetch(`https://ipinfo.io/json?token=${apiToken.value}`);
-    const data = await response.json();
-    const foundCountry = countries.find(country => country.code === data.country);
-    if (foundCountry) {
-      selectedCountry.value = foundCountry;
+    const ipifyResponse = await fetch('https://api.ipify.org?format=jsonp&callback=getIP');
+    const ipifyData = await ipifyResponse.text();
+
+    try {
+      const match = ipifyData.match(/getIP\((.*?)\)/);
+      if (match && match[1]) {
+        const ipAddress = JSON.parse(match[1]).ip;
+
+        const response = await fetch(`https://ipinfo.io/${ipAddress}/json`);
+
+        const data = await response.json();
+
+        const foundCountry = countries.find(country => country.code === data.country);
+        if (foundCountry) {
+          selectedCountry.value = foundCountry;
+        }
+      } else {
+        console.error('Error extracting IP address from JSONP response');
+      }
+    } catch (error) {
+      console.error('Error parsing JSON from JSONP response:', error);
     }
   } catch (error) {
-    console.error('Ошибка при получении геолокации:', error);
+    console.error('Error fetching geolocation:', error);
   }
 };
 
