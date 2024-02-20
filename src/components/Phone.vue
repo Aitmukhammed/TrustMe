@@ -55,7 +55,7 @@ const getGeoLocation = async () => {
       const match = ipifyData.match(/getIP\((.*?)\)/);
       if (match && match[1]) {
         const ipAddress = JSON.parse(match[1]).ip;
-
+debugger
         const response = await fetch(`https://ipinfo.io/${ipAddress}/json`);
 
         const data = await response.json();
