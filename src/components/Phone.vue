@@ -68,21 +68,30 @@ const getGeoLocation = async () => {
       if (match && match[1]) {
         const ipAddress = JSON.parse(match[1]).ip;
 
-        const response = await fetch(`https://ipinfo.io/${ipAddress}/json`);
-        const data = await response.json();
+        try {
+          const response = await fetch(`https://ipinfo.io/${ipAddress}/json`);
+          const data = await response.json();
 
-        const foundCountry = countries.find(country => country.code === data.country);
-        if (foundCountry) {
-          selectedCountry.value = foundCountry;
+          const foundCountry = countries.find(country => country.code === data.country);
+          if (foundCountry) {
+            selectedCountry.value = foundCountry;
+          }
+        } catch (error) {
+          if (error instanceof TypeError && error.name === 'TypeError' && error.message.includes('Failed to fetch')) {
+            // Обработка случая, когда запрос блокируется adblocker'ом
+            console.error('Ошибка: Запрос блокирован adblocker\'ом. Пожалуйста, отключите adblocker.');
+          } else {
+            console.error('Ошибка при запросе геолокации:', error);
+          }
         }
       } else {
-        console.error('Error extracting IP address from JSONP response');
+        console.error('Ошибка: Не удалось извлечь IP-адрес из JSONP-ответа');
       }
     } catch (error) {
-      console.error('Error parsing JSON from JSONP response:', error);
+      console.error('Ошибка при парсинге JSON из JSONP-ответа:', error);
     }
   } catch (error) {
-    console.error('Error fetching geolocation:', error);
+    console.error('Ошибка при запросе IP-адреса:', error);
   }
 };
 
