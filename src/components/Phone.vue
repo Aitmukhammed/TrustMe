@@ -49,7 +49,6 @@ const placeholderImage = 'https://upload.wikimedia.org/wikipedia/commons/e/eb/Bl
 
 const handleDialCodeInput = () => {
   const enteredDialCode = phoneNumber.value;
-
   const matchingCountries = countries.filter(country => enteredDialCode.startsWith(country.dial_code));
   if (matchingCountries.length != 0) {
     selectedCountry.value = matchingCountries[0];
@@ -80,6 +79,8 @@ const getGeoLocationWithIp = async () => {
           if (error instanceof TypeError && error.name === 'TypeError' && error.message.includes('Failed to fetch')) {
             // Обработка случая, когда запрос блокируется adblocker'ом
             console.error('Ошибка: Запрос блокирован adblocker\'ом. Пожалуйста, отключите adblocker.');
+            // Установка Казахстана по умолчанию
+            selectedCountry.value = countries.find(country => country.code === 'KZ') || null;
           } else {
             console.error('Ошибка при запросе геолокации:', error);
           }
