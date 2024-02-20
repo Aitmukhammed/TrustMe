@@ -58,7 +58,7 @@ const handleDialCodeInput = () => {
   }
 };
 
-const getGeoLocation = async () => {
+const getGeoLocationWithIpWithIp = async () => {
   try {
     const ipifyResponse = await fetch('https://api.ipify.org?format=jsonp&callback=getIP');
     const ipifyData = await ipifyResponse.text();
@@ -96,7 +96,7 @@ const getGeoLocation = async () => {
 };
 
 onMounted(() => {
-  getGeoLocation();
+  getGeoLocationWithIpWithIp();
 });
 
 const toggleDropdown = () => {
