@@ -6,6 +6,7 @@
       class="input"
       :placeholder="`Введите номер телефона ${selectedCountry ? selectedCountry.dial_code : ''} _______`"
       v-model="phoneNumber"
+      @input="handleDialCodeInput"
     />
 
     <span class="btn-container" id="inputGroup-sizing-default">
@@ -15,7 +16,7 @@
         @click="toggleDropdown"
       >
       <img :src="selectedCountry ? selectedCountry.image : placeholderImage" class="selectedImage" id="selectedImage" :alt="selectedCountry ? selectedCountry.name : 'Placeholder'" width="30" height="20" />
-
+      
       <ul class="dropdown-menu" :class="{ 'show': isDropdownVisible }" style="max-height: 300px; overflow-y: auto;">
           <li v-for="(country, index) in countries" :key="index" @click="selectCountry(country)">
             <img :src="country.image" :alt="country.name" width="30" height="20" />
@@ -45,7 +46,19 @@ const phoneNumber = ref('');
 const isDropdownVisible = ref(false);
 const selectedCountry = ref<Country | null>(null);
 const placeholderImage = 'https://upload.wikimedia.org/wikipedia/commons/e/eb/Blank.jpg'
-console.log("qwerty");
+
+const handleDialCodeInput = () => {
+  const enteredDialCode = phoneNumber.value;
+
+  const matchingCountries = countries.filter(country => enteredDialCode.startsWith(country.dial_code));
+debugger
+  if (matchingCountries.length != 0) {
+    selectedCountry.value = matchingCountries[0];
+    selectedCountry.value.image = matchingCountries[0].image;
+  } else {
+  }
+};
+
 const getGeoLocation = async () => {
   try {
     const ipifyResponse = await fetch('https://api.ipify.org?format=jsonp&callback=getIP');
