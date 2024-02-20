@@ -54,10 +54,9 @@ const getGeoLocation = async () => {
     try {
       const match = ipifyData.match(/getIP\((.*?)\)/);
       if (match && match[1]) {
-        const ipAddress = JSON.parse(match[1]).ip;
-debugger
-        const response = await fetch(`https://ipinfo.io/${ipAddress}/json`);
+        const ipUser = JSON.parse(match[1]).ip;
 
+        const response = await fetch(`https://ipinfo.io/${ipUser}/json`);
         const data = await response.json();
 
         const foundCountry = countries.find(country => country.code === data.country);
