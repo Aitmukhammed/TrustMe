@@ -51,7 +51,6 @@ const handleDialCodeInput = () => {
   const enteredDialCode = phoneNumber.value;
 
   const matchingCountries = countries.filter(country => enteredDialCode.startsWith(country.dial_code));
-debugger
   if (matchingCountries.length != 0) {
     selectedCountry.value = matchingCountries[0];
     selectedCountry.value.image = matchingCountries[0].image;
