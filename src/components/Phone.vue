@@ -20,7 +20,7 @@
       <ul class="dropdown-menu" :class="{ 'show': isDropdownVisible }" style="max-height: 300px; overflow-y: auto;">
           <li v-for="(country, index) in countries" :key="index" @click="selectCountry(country)">
             <img :src="country.image" :alt="country.name" width="30" height="20" />
-            {{ country.name }} - {{ country.dial_code }}
+            {{ country.name }}  {{ country.dial_code }}
           </li>
         </ul>
       </button>
