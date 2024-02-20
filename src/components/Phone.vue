@@ -45,7 +45,7 @@ const phoneNumber = ref('');
 const isDropdownVisible = ref(false);
 const selectedCountry = ref<Country | null>(null);
 const placeholderImage = 'https://upload.wikimedia.org/wikipedia/commons/e/eb/Blank.jpg'
-
+console.log("qwerty");
 const getGeoLocation = async () => {
   try {
     const ipifyResponse = await fetch('https://api.ipify.org?format=jsonp&callback=getIP');
